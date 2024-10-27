@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,3 +30,8 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+Route::get('admin/dashboard', [AdminController::class, 'dashboard'])->name('admin_dashboard');
+Route::get('admin/login', [AdminController::class, 'login'])->name('admin_login');
+Route::post('admin/login-submit', [AdminController::class, 'login_submit'])->name('admin_login_submit');
+Route::get('admin/logout', [AdminController::class, 'logout'])->name('admin_logout');
