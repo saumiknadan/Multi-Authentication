@@ -31,7 +31,13 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('admin/dashboard', [AdminController::class, 'dashboard'])->name('admin_dashboard');
-Route::get('admin/login', [AdminController::class, 'login'])->name('admin_login');
-Route::post('admin/login-submit', [AdminController::class, 'login_submit'])->name('admin_login_submit');
-Route::get('admin/logout', [AdminController::class, 'logout'])->name('admin_logout');
+Route::middleware('admin')->prefix('admin')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('admin_dashboard');
+});
+
+Route::prefix('admin')->group(function () {
+    Route::get('/login', [AdminController::class, 'login'])->name('admin_login');
+    Route::post('/login-submit', [AdminController::class, 'login_submit'])->name('admin_login_submit');
+    Route::get('/logout', [AdminController::class, 'logout'])->name('admin_logout');
+});
+

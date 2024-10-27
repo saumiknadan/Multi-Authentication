@@ -24,6 +24,32 @@ class AdminController extends Controller
         return view('admin.login');
     }
 
+    public function login_submit(Request $request)
+    {
+        //dd($request->all());
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+        $check = $request->all();
+        
+        $data = [
+            'email' => $check['email'],
+            'password' => $check['password'],
+        ];
+
+        if (Auth::guard('admin')->attempt($data)) {
+            return redirect()->route('admin_dashboard')->with('success', 'Login Successfull');
+        } else {
+            return redirect()->route('admin_login')->with('error', 'Invalid Credentials');
+        }
+    }
+
+    public function logout()
+    {
+        Auth:: guard('admin')->logout();
+        return redirect()->route('admin_login')->with('success', 'Logout Successfully');
+    }
     /**
      * Show the form for creating a new resource.
      */

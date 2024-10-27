@@ -9,6 +9,6 @@
 <body>
     <h1>Admin Dashboard</h1>
     <p>Welcome</p>
-    <a href="">Logout</a>
+    <a href="{{ route('admin_logout') }}">Logout</a>
 </body>
 </html>
