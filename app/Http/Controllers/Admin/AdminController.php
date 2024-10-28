@@ -56,7 +56,32 @@ class AdminController extends Controller
         return view('admin.forget-password');
     }
 
-    
+    public function forget_password_submit(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email'
+        ]);
+
+        $admin_data = Admin:: where('email', $request->email)->first();
+
+        if(!$admin_data) {
+            return redirect()->back()->with('error', 'Email not found');
+        }
+
+        $token = hash('sha256',time());
+        $admin_data->token = $token;
+        $admin_data->update();
+
+        $reset_link = url('admin/reset-password/'.$token.'/'.$request->email);
+
+        $subject = "Reset Password";
+        $message = "Please click on below link to reset your password<br><br>";
+        $message = "<a href='".$reset_link."'>Click Here</a>";
+
+        \Mail::to($request->email)->send(new Websitemail($subject, $message));
+        
+        return redirect()->back()->with('success', 'Reset password link sent on your email');
+    }
     /**
      * Show the form for creating a new resource.
      */
