@@ -50,6 +50,13 @@ class AdminController extends Controller
         Auth:: guard('admin')->logout();
         return redirect()->route('admin_login')->with('success', 'Logout Successfully');
     }
+
+    public function forget_password()
+    {    
+        return view('admin.forget-password');
+    }
+
+    
     /**
      * Show the form for creating a new resource.
      */
